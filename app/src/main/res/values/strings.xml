@@ -9,4 +9,6 @@
     <string name="title_activity_view_short_plans">ViewShortPlansActivity</string>
     <string name="title_activity_view_long_plans">ViewLongPlansActivity</string>
     <string name="title_activity_view_trash">ViewTrashActivity</string>
+    <string name="title_activity_view_short_plan_detail">ViewShortPlanDetail</string>
+    <string name="title_activity_view_long_plan_detail">ViewLongPlanDetail</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.assignment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,11 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TwoLineListItem;
 
 import com.example.assignment.DBHandler.DatabaseHandler;
 import com.example.assignment.Entity.LongTermNote;
 import com.example.assignment.Entity.ShortTermNote;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,15 +56,57 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //This is a db test part
+
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        databaseHandler.addLongTermNote(new LongTermNote(1, "acb"));
+        /*databaseHandler.addLongTermNote(new LongTermNote(1, "acb"));
         databaseHandler.addShortTermNote(new ShortTermNote(1, "title", "cyka", "2019", -1, -1 ));
+        databaseHandler.addShortTermNote(new ShortTermNote(2, "second", "cyka", "2018", -1, -1 ));
 
         LongTermNote note = databaseHandler.findLongTermNote("acb");
         ShortTermNote shortTermNote = databaseHandler.findShortTermNote("title");
-        Toast.makeText(this, note.getTitle(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this, shortTermNote.getTitle(), Toast.LENGTH_LONG).show();
+
+        /*Toast.makeText(this, note.getTitle(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, shortTermNote.getTitle(), Toast.LENGTH_LONG).show();*/
+
+        //ListView listView = findViewById(R.id.listPlan);
+
+        //update listView
+        databaseHandler.deleteShortTermNote("title");
+        ListView listView = findViewById(R.id.listPlan);
+        final ArrayList<ShortTermNote> notes = databaseHandler.findUrgentNotes();
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2,
+                android.R.id.text1, notes) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view =super.getView(position, convertView, parent);
+                TextView text1 = view.findViewById(android.R.id.text1);
+                TextView text2 = view.findViewById(android.R.id.text2);
+
+                text1.setText(notes.get(position).getTitle());
+                text2.setText(notes.get(position).getContent());
+
+                return view;
+            }
+        };
+
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        //set onclick handler for item
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, ViewShortPlanDetail.class);
+                TwoLineListItem twoLineListItem  =(TwoLineListItem) view;
+                String title = twoLineListItem.getText1().getText().toString();
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -95,17 +146,27 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Intent intent;
         if (id == R.id.shortPlans) {
-            // Handle the camera action
+            intent = new Intent(MainActivity.this, ViewShortPlansActivity.class);
+            startActivity(intent);
         } else if (id == R.id.longPlans) {
-
+            intent = new Intent(MainActivity.this, ViewLongPlansActivity.class);
+            startActivity(intent);
         } else if (id == R.id.weather) {
+            //TODO
 
         } else if (id == R.id.trash) {
+            intent = new Intent(MainActivity.this, ViewTrashActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.about) {
+            intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.help) {
+            intent = new Intent(MainActivity.this, HelpActivity.class);
+            startActivity(intent);
 
         }
 

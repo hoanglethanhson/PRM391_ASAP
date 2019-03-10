@@ -205,7 +205,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return 0 ;
     }
 
-    //find urgent notes
+
+    //find all short notes
     public ArrayList<ShortTermNote> findAllShortNotes() {
         ShortTermNote note;
         ArrayList<ShortTermNote> notes = new ArrayList<>();

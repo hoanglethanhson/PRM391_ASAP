@@ -6,14 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
-public class ViewShortPlansActivity extends AppCompatActivity {
+public class ViewShortPlanDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_short_plans);
+        setContentView(R.layout.activity_view_short_plan_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -25,14 +24,6 @@ public class ViewShortPlansActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        TextView textView = findViewById(R.id.textView3);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) {
-            return;
-        }
-        String text = bundle.getString("title");
-        textView.setText(text);
     }
 
 }

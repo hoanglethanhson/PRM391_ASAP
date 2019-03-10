@@ -68,4 +68,10 @@ public class ShortTermNote {
     public void setLongNoteId(int longNoteId) {
         this.longNoteId = longNoteId;
     }
+
+
+    @Override
+    public String toString() {
+        return title + "\t" + content + "\t" + deadline;
+    }
 }

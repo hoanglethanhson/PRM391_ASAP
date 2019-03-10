@@ -9,7 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HelpActivity"></activity>
+        <activity
+            android:name=".ViewLongPlanDetail"
+            android:label="@string/title_activity_view_long_plan_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ViewShortPlanDetail"
+            android:label="@string/title_activity_view_short_plan_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".HelpActivity" />
         <activity android:name=".AboutActivity" />
         <activity
             android:name=".ViewTrashActivity"
