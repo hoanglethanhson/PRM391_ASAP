@@ -228,8 +228,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //find urgent notes
     public ArrayList<ShortTermNote> findUrgentNotes() {
-        //TODO
-        ArrayList<ShortTermNote> allNotes = findAllShortNotes();
-        return null;
+        ShortTermNote note;
+        ArrayList<ShortTermNote> notes = new ArrayList<>();
+        String query = "Select *  From  " + TABLE_SHORTNOTE + " Order by " + COLUMN_SHORTNOTE_DEADLINE;
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                note = new ShortTermNote();
+                note.setId(cursor.getInt(0));
+                note.setTitle(cursor.getString(1));
+                note.setContent(cursor.getString(2));
+                note.setDeadline(cursor.getColumnName(3));
+                note.setIsDeleted(cursor.getInt(4));
+                note.setLongNoteId(cursor.getInt(5));
+
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        if (notes.size() <= 5) {
+            return notes;
+        } else {
+            return (ArrayList<ShortTermNote>) notes.subList(0, 4);
+        }
     }
 }
