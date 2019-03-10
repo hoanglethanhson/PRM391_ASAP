@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //This is a db test part
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
         databaseHandler.addLongTermNote(new LongTermNote(1, "acb"));
         databaseHandler.addShortTermNote(new ShortTermNote(1, "title", "cyka", "2019", -1, -1 ));
 
-        //TextView count = findViewById(R.id.countRecord);
         LongTermNote note = databaseHandler.findLongTermNote("acb");
         ShortTermNote shortTermNote = databaseHandler.findShortTermNote("title");
         Toast.makeText(this, note.getTitle(), Toast.LENGTH_LONG).show();
