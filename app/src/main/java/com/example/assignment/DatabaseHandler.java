@@ -20,7 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     // Database name
-    private static final String DATABASE_NAME = "ASAP";
+    private static final String DATABASE_NAME = "ASAP.db";
 
 
     // Short term note attributes
