@@ -1,4 +1,4 @@
-package com.example.assignment;
+package com.example.assignment.Entity;
 
 public class ShortTermNote {
     private int id;

@@ -1,4 +1,4 @@
-package com.example.assignment;
+package com.example.assignment.DBHandler;
 
 
 import android.content.ContentValues;
@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.example.assignment.Entity.LongTermNote;
+import com.example.assignment.Entity.ShortTermNote;
 
 import java.util.ArrayList;
 
