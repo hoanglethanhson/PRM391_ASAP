@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +42,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        databaseHandler.addLongTermNote(new LongTermNote(1, "acb"));
+        databaseHandler.addShortTermNote(new ShortTermNote(1, "title", "cyka", "2019", -1, -1 ));
+
+        //TextView count = findViewById(R.id.countRecord);
+        LongTermNote note = databaseHandler.findLongTermNote("acb");
+        ShortTermNote shortTermNote = databaseHandler.findShortTermNote("title");
+        Toast.makeText(this, note.getTitle(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, shortTermNote.getTitle(), Toast.LENGTH_LONG).show();
     }
 
     @Override

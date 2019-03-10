@@ -100,7 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_LONGNOTE_TITLE, note.getTitle());
 
         SQLiteDatabase db = getWritableDatabase();
-        long result = db.insert(TABLE_SHORTNOTE, null, values);
+        long result = db.insert(TABLE_LONGNOTE, null, values);
 
         return result;
     }
@@ -117,7 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setId(cursor.getInt(0));
             note.setTitle(cursor.getString(1));
             note.setContent(cursor.getString(2));
-            note.setDeadline(cursor.getColumnName(3));
+            note.setDeadline(cursor.getString(3));
             note.setIsDeleted(cursor.getInt(4));
             note.setLongNoteId(cursor.getInt(5));
 
@@ -158,7 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(0));
                 note.setTitle(cursor.getString(1));
                 note.setContent(cursor.getString(2));
-                note.setDeadline(cursor.getColumnName(3));
+                note.setDeadline(cursor.getString(3));
                 note.setIsDeleted(cursor.getInt(4));
                 note.setLongNoteId(cursor.getInt(5));
 
@@ -216,7 +216,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(0));
                 note.setTitle(cursor.getString(1));
                 note.setContent(cursor.getString(2));
-                note.setDeadline(cursor.getColumnName(3));
+                note.setDeadline(cursor.getString(3));
                 note.setIsDeleted(cursor.getInt(4));
                 note.setLongNoteId(cursor.getInt(5));
 
@@ -240,7 +240,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(0));
                 note.setTitle(cursor.getString(1));
                 note.setContent(cursor.getString(2));
-                note.setDeadline(cursor.getColumnName(3));
+                note.setDeadline(cursor.getString(3));
                 note.setIsDeleted(cursor.getInt(4));
                 note.setLongNoteId(cursor.getInt(5));
 

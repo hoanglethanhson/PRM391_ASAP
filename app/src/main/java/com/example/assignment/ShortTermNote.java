@@ -12,7 +12,8 @@ public class ShortTermNote {
 
     }
 
-    public ShortTermNote(String title, String deadline, String content, int isDeleted, int longNoteId) {
+    public ShortTermNote(int id, String title, String content, String deadline, int isDeleted, int longNoteId) {
+        this.id = id;
         this.title = title;
         this.deadline = deadline;
         this.content = content;
