@@ -18,7 +18,8 @@
             android:label="@string/title_activity_view_short_plan_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".HelpActivity" />
-        <activity android:name=".AboutActivity" />
+        <activity android:name=".AboutActivity"
+            android:label="About"/>
         <activity
             android:name=".ViewTrashActivity"
             android:label="@string/title_activity_view_trash"
