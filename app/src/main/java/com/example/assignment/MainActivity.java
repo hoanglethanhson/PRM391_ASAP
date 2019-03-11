@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity
 
         //This is a db test part
 
-        //DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
         //databaseHandler.addShortTermNote(new ShortTermNote("third", "first task", "2019", -1, -1, -1 ));
-        //databaseHandler.addShortTermNote(new ShortTermNote("fourth", "first task", "2018", -1, -1, -1 ));
+       // databaseHandler.addShortTermNote(new ShortTermNote("good date", "none", "2019/04/30 09:00", -1, -1, -1 ));
 
 
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
 
     public void updateListView() {
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        //databaseHandler.deleteShortTermNote("second");
+        //databaseHandler.deleteShortTermNote("third");
         ListView listView = findViewById(R.id.listPlan);
         final ArrayList<ShortTermNote> notes = databaseHandler.findUrgentNotes();
         if (notes.isEmpty()) {

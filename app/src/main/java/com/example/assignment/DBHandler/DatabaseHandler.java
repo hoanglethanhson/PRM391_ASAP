@@ -43,6 +43,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_LONGNOTE_ID = "Id";
     private static final String COLUMN_LONGNOTE_TITLE = "Title";
 
+    //relationship constants
+    private static final int NOT_BELONG = -1;
+    private static final int NOT_COMPLETE = 0;
+    private static final int NOT_DELETED = -1;
+
+    private static final int COMPLETE = 1;
+    private static final int DELETED = 1;
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -93,8 +101,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_SHORTNOTE_CONTENT, note.getContent());
         values.put(COLUMN_SHORTNOTE_DEADLINE, note.getDeadline());
         values.put(COLUMN_SHORTNOTE_ISDEAD, note.getIsDeleted());
-        values.put(COLUMN_SHORTNOTE_ISCOMPLETE, 0);
-        values.put(COLUMN_SHORTNOTE_LONGNOTEID, note.getLongNoteId());
+        values.put(COLUMN_SHORTNOTE_ISCOMPLETE, NOT_COMPLETE);
+        values.put(COLUMN_SHORTNOTE_LONGNOTEID, NOT_BELONG);
 
         SQLiteDatabase db = getWritableDatabase();
         long result = db.insert(TABLE_SHORTNOTE, null, values);
@@ -129,6 +137,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setIsDeleted(cursor.getInt(4));
             note.setIsComplete(cursor.getInt(5));
             note.setLongNoteId(cursor.getInt(6));
+            cursor.close();
+            db.close();
 
             return note;
         }
@@ -152,6 +162,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setIsComplete(cursor.getInt(5));
             note.setLongNoteId(cursor.getInt(6));
 
+            cursor.close();
+            db.close();
             return note;
         }
 
@@ -170,6 +182,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setId(cursor.getInt(0));
             note.setTitle(cursor.getString(1));
 
+            cursor.close();
+            db.close();
             return note;
         }
         return null;
@@ -197,6 +211,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 notes.add(note);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
         return notes;
     }
 
@@ -267,6 +283,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 notes.add(note);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
         return notes;
     }
 
@@ -291,7 +309,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 notes.add(note);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
+        db.close();
         if (notes.size() <= 5) {
             return notes;
         } else {
@@ -301,5 +320,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
             return urgents;
         }
+    }
+
+    //update a short term note
+    public int updateShortNote(int id, ShortTermNote note) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SHORTNOTE_TITLE, note.getTitle());
+        values.put(COLUMN_SHORTNOTE_CONTENT, note.getContent());
+        values.put(COLUMN_SHORTNOTE_DEADLINE, note.getDeadline());
+        values.put(COLUMN_SHORTNOTE_ISCOMPLETE, note.getIsComplete());
+        values.put(COLUMN_SHORTNOTE_ISDEAD, note.getIsDeleted());
+
+        SQLiteDatabase database = getWritableDatabase();
+        return database.update(TABLE_SHORTNOTE, values, COLUMN_SHORTNOTE_ID + " = ?" , new String[]{String.valueOf(id)});
     }
 }
