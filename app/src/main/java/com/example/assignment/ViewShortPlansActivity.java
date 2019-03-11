@@ -26,13 +26,7 @@ public class ViewShortPlansActivity extends AppCompatActivity {
             }
         });
 
-        TextView textView = findViewById(R.id.textView3);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) {
-            return;
-        }
-        String text = bundle.getString("title");
-        textView.setText(text);
+
     }
 
 }

@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     // Database name
-    private static final String DATABASE_NAME = "ASAP.db";
+    private static final String DATABASE_NAME = "ASAP1.db";
 
 
     // Short term note attributes
@@ -35,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_SHORTNOTE_DEADLINE = "DeadLine";
     private static final String COLUMN_SHORTNOTE_ISDEAD = "IsDead";
     private static final String COLUMN_SHORTNOTE_LONGNOTEID = "LongNoteId";
+    private static final String COLUMN_SHORTNOTE_ISCOMPLETE = "IsComplete";
 
     // Long term note attributes
     private static final String TABLE_LONGNOTE = "LongTermNote";
@@ -51,16 +52,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Create tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "MyDatabaseHelper.onCreate ... ");
-        // Table create scripts
-        String script = "CREATE TABLE " + TABLE_SHORTNOTE + "("
-                + COLUMN_SHORTNOTE_ID + " INTEGER PRIMARY KEY," + COLUMN_SHORTNOTE_TITLE + " TEXT NOT NULL,"
-                + COLUMN_SHORTNOTE_CONTENT + " TEXT NOT NULL," + COLUMN_SHORTNOTE_DEADLINE + " TEXT NOT NULL,"
-                + COLUMN_SHORTNOTE_ISDEAD + " INTEGER NOT NULL," + COLUMN_SHORTNOTE_LONGNOTEID + " INTEGER,"
-                + " FOREIGN KEY (" + COLUMN_SHORTNOTE_LONGNOTEID + ") REFERENCES " + TABLE_LONGNOTE + "(" + COLUMN_LONGNOTE_ID + ")" + ")";
 
-        String script2 = "CREATE TABLE " + TABLE_LONGNOTE + "("
-                + COLUMN_LONGNOTE_ID + " INTEGER PRIMARY KEY," + COLUMN_LONGNOTE_TITLE + " TEXT NOT NULL" + ")";
+        // Table create scripts
+        String script2 = "CREATE TABLE " + TABLE_SHORTNOTE + "("
+                + COLUMN_SHORTNOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_SHORTNOTE_TITLE + " TEXT NOT NULL,"
+                + COLUMN_SHORTNOTE_CONTENT + " TEXT NOT NULL,"
+                + COLUMN_SHORTNOTE_DEADLINE + " TEXT NOT NULL,"
+                + COLUMN_SHORTNOTE_ISDEAD + " INTEGER NOT NULL,"
+                + COLUMN_SHORTNOTE_ISCOMPLETE + " INTEGER NOT NULL,"
+                + COLUMN_SHORTNOTE_LONGNOTEID + " INTEGER)";
+
+        String script = "CREATE TABLE " + TABLE_LONGNOTE + "("
+                + COLUMN_LONGNOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_LONGNOTE_TITLE + " TEXT NOT NULL" + ")";
         // Run script to create tables
         db.execSQL(script);
         db.execSQL(script2);
@@ -89,6 +93,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_SHORTNOTE_CONTENT, note.getContent());
         values.put(COLUMN_SHORTNOTE_DEADLINE, note.getDeadline());
         values.put(COLUMN_SHORTNOTE_ISDEAD, note.getIsDeleted());
+        values.put(COLUMN_SHORTNOTE_ISCOMPLETE, 0);
         values.put(COLUMN_SHORTNOTE_LONGNOTEID, note.getLongNoteId());
 
         SQLiteDatabase db = getWritableDatabase();
@@ -108,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    //find a short term note
+    //find a short term note by name
     public ShortTermNote findShortTermNote(String noteName) {
 
         ShortTermNote note = new ShortTermNote();
@@ -122,7 +127,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setContent(cursor.getString(2));
             note.setDeadline(cursor.getString(3));
             note.setIsDeleted(cursor.getInt(4));
-            note.setLongNoteId(cursor.getInt(5));
+            note.setIsComplete(cursor.getInt(5));
+            note.setLongNoteId(cursor.getInt(6));
+
+            return note;
+        }
+
+        return null;
+    }
+
+    //find a short term note by id
+    public ShortTermNote findShortById(int id) {
+        ShortTermNote note = new ShortTermNote();
+        String query = "Select * From " + TABLE_SHORTNOTE
+                + " Where " + COLUMN_SHORTNOTE_ID + " = " + id + "";
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            note.setId(cursor.getInt(0));
+            note.setTitle(cursor.getString(1));
+            note.setContent(cursor.getString(2));
+            note.setDeadline(cursor.getString(3));
+            note.setIsDeleted(cursor.getInt(4));
+            note.setIsComplete(cursor.getInt(5));
+            note.setLongNoteId(cursor.getInt(6));
 
             return note;
         }
@@ -163,7 +191,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setContent(cursor.getString(2));
                 note.setDeadline(cursor.getString(3));
                 note.setIsDeleted(cursor.getInt(4));
-                note.setLongNoteId(cursor.getInt(5));
+                note.setIsComplete(cursor.getInt(5));
+                note.setLongNoteId(cursor.getInt(6));
 
                 notes.add(note);
             } while (cursor.moveToNext());
@@ -171,7 +200,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return notes;
     }
 
-    //delete a short term note
+    //delete a short term note by name
     public int deleteShortTermNote(String noteName) {
         ShortTermNote note = findShortTermNote(noteName);
         if (note != null) {
@@ -182,7 +211,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return 0;
     }
 
-    //delete a long term note
+    //delete short term note by id
+    public int deleteShortById(int id) {
+        ShortTermNote note = findShortById(id);
+        if (note != null) {
+            SQLiteDatabase db = getWritableDatabase();
+            int result = db.delete(TABLE_SHORTNOTE, COLUMN_SHORTNOTE_ID + " = ?", new String[]{String.valueOf(note.getId())});
+            return  result;
+        }
+        return 0;
+    }
+
+    //delete a long term note by name
     public int deleteLongTermNote(String noteName) {
         LongTermNote note = findLongTermNote(noteName);
         if (note != null) {
@@ -255,7 +295,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (notes.size() <= 5) {
             return notes;
         } else {
-            return (ArrayList<ShortTermNote>) notes.subList(0, 4);
+            ArrayList<ShortTermNote> urgents = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                urgents.add(notes.get(i));
+            }
+            return urgents;
         }
     }
 }

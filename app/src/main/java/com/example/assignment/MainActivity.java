@@ -57,23 +57,40 @@ public class MainActivity extends AppCompatActivity
 
         //This is a db test part
 
-        DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        /*databaseHandler.addLongTermNote(new LongTermNote(1, "acb"));
-        databaseHandler.addShortTermNote(new ShortTermNote(1, "title", "cyka", "2019", -1, -1 ));
-        databaseHandler.addShortTermNote(new ShortTermNote(2, "second", "cyka", "2018", -1, -1 ));
+        //DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
-        LongTermNote note = databaseHandler.findLongTermNote("acb");
-        ShortTermNote shortTermNote = databaseHandler.findShortTermNote("title");
+        //databaseHandler.addShortTermNote(new ShortTermNote("third", "first task", "2019", -1, -1, -1 ));
+        //databaseHandler.addShortTermNote(new ShortTermNote("fourth", "first task", "2018", -1, -1, -1 ));
 
-        /*Toast.makeText(this, note.getTitle(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this, shortTermNote.getTitle(), Toast.LENGTH_LONG).show();*/
 
-        //ListView listView = findViewById(R.id.listPlan);
 
         //update listView
-        databaseHandler.deleteShortTermNote("title");
+        updateListView();
+
+        //set onclick handler for item
+        ListView listView = findViewById(R.id.listPlan);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, ViewShortPlanDetail.class);
+                TwoLineListItem twoLineListItem  =(TwoLineListItem) view;
+                String firstLine = twoLineListItem.getText1().getText().toString();
+                String[] words=firstLine.split("\\s");
+                intent.putExtra("id", words[0]);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void updateListView() {
+        DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        //databaseHandler.deleteShortTermNote("second");
         ListView listView = findViewById(R.id.listPlan);
         final ArrayList<ShortTermNote> notes = databaseHandler.findUrgentNotes();
+        if (notes.isEmpty()) {
+            Toast.makeText(this.getApplicationContext(), "No urgent notes to display!", Toast.LENGTH_LONG).show();
+        }
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2,
                 android.R.id.text1, notes) {
 
@@ -83,7 +100,7 @@ public class MainActivity extends AppCompatActivity
                 TextView text1 = view.findViewById(android.R.id.text1);
                 TextView text2 = view.findViewById(android.R.id.text2);
 
-                text1.setText(notes.get(position).getTitle());
+                text1.setText(notes.get(position).getId() + " " + notes.get(position).getTitle());
                 text2.setText(notes.get(position).getContent());
 
                 return view;
@@ -92,20 +109,7 @@ public class MainActivity extends AppCompatActivity
 
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        //set onclick handler for item
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, ViewShortPlanDetail.class);
-                TwoLineListItem twoLineListItem  =(TwoLineListItem) view;
-                String title = twoLineListItem.getText1().getText().toString();
-                intent.putExtra("title", title);
-                startActivity(intent);
-            }
-        });
     }
-
 
 
     @Override

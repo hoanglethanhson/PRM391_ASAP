@@ -5,6 +5,7 @@ public class ShortTermNote {
     private String title;
     private String deadline;
     private String content;
+    private int isComplete;
     private int isDeleted;
     private int longNoteId;
 
@@ -12,11 +13,22 @@ public class ShortTermNote {
 
     }
 
-    public ShortTermNote(int id, String title, String content, String deadline, int isDeleted, int longNoteId) {
+    public ShortTermNote(int id, String title, String content, String deadline, int isComplete, int isDeleted, int longNoteId) {
         this.id = id;
         this.title = title;
         this.deadline = deadline;
         this.content = content;
+        this.isComplete = isComplete;
+        this.isDeleted = isDeleted;
+        this.longNoteId = longNoteId;
+    }
+
+    public ShortTermNote( String title, String content, String deadline, int isComplete, int isDeleted, int longNoteId) {
+
+        this.title = title;
+        this.deadline = deadline;
+        this.content = content;
+        this.isComplete = isComplete;
         this.isDeleted = isDeleted;
         this.longNoteId = longNoteId;
     }
@@ -69,6 +81,13 @@ public class ShortTermNote {
         this.longNoteId = longNoteId;
     }
 
+    public int getIsComplete() {
+        return isComplete;
+    }
+
+    public void setIsComplete(int isComplete) {
+        this.isComplete = isComplete;
+    }
 
     @Override
     public String toString() {
