@@ -306,7 +306,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setIsDeleted(cursor.getInt(4));
                 note.setLongNoteId(cursor.getInt(5));
 
-                notes.add(note);
+                if (note.getIsDeleted() != DELETED) {
+                    notes.add(note);
+                } else {
+                    continue;
+                }
+
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -333,5 +338,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase database = getWritableDatabase();
         return database.update(TABLE_SHORTNOTE, values, COLUMN_SHORTNOTE_ID + " = ?" , new String[]{String.valueOf(id)});
+    }
+
+    //move item to trash bin
+    public int moveTrashShort(int id) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SHORTNOTE_ISDEAD, DELETED);
+
+        SQLiteDatabase database = getWritableDatabase();
+        return database.update(TABLE_SHORTNOTE, values, COLUMN_SHORTNOTE_ID + " = ?" , new String[]{String.valueOf(id)});
+
     }
 }
