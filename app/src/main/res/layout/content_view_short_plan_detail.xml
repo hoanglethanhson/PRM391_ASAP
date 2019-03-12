@@ -115,10 +115,9 @@
         android:layout_marginTop="500dp"
         android:layout_marginEnd="8dp"
         android:drawableLeft="@android:drawable/ic_delete"
-        android:onClick="onDeleteShortClick"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.672"
+        app:layout_constraintHorizontal_bias="0.768"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -140,7 +139,7 @@
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="440dp"
         android:layout_marginEnd="8dp"
@@ -156,10 +155,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="436dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="440dp"
+        android:layout_marginEnd="252dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintHorizontal_bias="0.949"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -214,7 +213,6 @@
         android:layout_marginTop="212dp"
         android:layout_marginEnd="8dp"
         android:drawableLeft="@android:drawable/ic_menu_edit"
-        android:onClick="onDeadTimeClick"
         android:text="Edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.902"
@@ -232,7 +230,7 @@
         android:onClick="onSaveModClick"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintHorizontal_bias="0.374"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
