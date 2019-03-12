@@ -341,8 +341,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         return database.update(TABLE_SHORTNOTE, values, COLUMN_SHORTNOTE_ID + " = ?" , new String[]{String.valueOf(id)});
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     //move item to trash bin
     public int moveTrashShort(int id) {
@@ -388,8 +386,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return result;
     }
-=======
->>>>>>> parent of fd9daf1... - modify database (add delete function)
-=======
->>>>>>> parent of fd9daf1... - modify database (add delete function)
+
 }
