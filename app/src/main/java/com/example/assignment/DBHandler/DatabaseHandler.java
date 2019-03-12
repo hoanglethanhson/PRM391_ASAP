@@ -74,9 +74,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String script = "CREATE TABLE " + TABLE_LONGNOTE + "("
                 + COLUMN_LONGNOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_LONGNOTE_TITLE + " TEXT NOT NULL" + ")";
         // Run script to create tables
-        db.execSQL(script);
-        db.execSQL(script2);
 
+        db.execSQL(script2);
+        db.execSQL(script);
+
+
+//        ContentValues values= new ContentValues();
+//        values.put(COLUMN_LONGNOTE_ID,"0");
+//        values.put(COLUMN_LONGNOTE_TITLE,"alone");
+//        db = getWritableDatabase();
+//        db.insert(TABLE_LONGNOTE,null,values);
 
     }
 
@@ -194,7 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ShortTermNote note;
         ArrayList<ShortTermNote> notes = new ArrayList<>();
         String query = "Select * From " + TABLE_SHORTNOTE
-                + " Where " + COLUMN_SHORTNOTE_LONGNOTEID + " = " + String.valueOf(longTermId) + "";
+                + " Where " + COLUMN_SHORTNOTE_LONGNOTEID + " = " + longTermId+ "";
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -348,5 +355,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         return database.update(TABLE_SHORTNOTE, values, COLUMN_SHORTNOTE_ID + " = ?" , new String[]{String.valueOf(id)});
 
+    }
+    public ArrayList<LongTermNote> findAllLongNotes() {
+        LongTermNote note;
+        ArrayList<LongTermNote> notes = new ArrayList<>();
+        String query = "Select * From " + TABLE_LONGNOTE;
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                note = new LongTermNote();
+                note.setId(cursor.getInt(0));
+                note.setTitle(cursor.getString(1));
+
+
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return notes;
+    }
+    public long addShortTermNoteOfLongTerm(ShortTermNote note) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SHORTNOTE_TITLE, note.getTitle());
+        values.put(COLUMN_SHORTNOTE_CONTENT, note.getContent());
+        values.put(COLUMN_SHORTNOTE_DEADLINE, note.getDeadline());
+        values.put(COLUMN_SHORTNOTE_ISDEAD, note.getIsDeleted());
+        values.put(COLUMN_SHORTNOTE_ISCOMPLETE, NOT_COMPLETE);
+        values.put(COLUMN_SHORTNOTE_LONGNOTEID, note.getLongNoteId());
+
+        SQLiteDatabase db = getWritableDatabase();
+        long result = db.insert(TABLE_SHORTNOTE, null, values);
+
+        return result;
     }
 }

@@ -33,6 +33,14 @@ public class ShortTermNote {
         this.longNoteId = longNoteId;
     }
 
+    public ShortTermNote(String title, String deadline, String content, int isDeleted, int longNoteId) {
+        this.title = title;
+        this.deadline = deadline;
+        this.content = content;
+        this.isDeleted = isDeleted;
+        this.longNoteId = longNoteId;
+    }
+
     public int getId() {
         return id;
     }

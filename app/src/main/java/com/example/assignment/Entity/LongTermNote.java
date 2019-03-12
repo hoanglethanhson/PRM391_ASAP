@@ -12,6 +12,10 @@ public class LongTermNote {
         this.title = title;
     }
 
+    public LongTermNote(String title) {
+        this.title = title;
+    }
+
     public int getId() {
         return id;
     }
